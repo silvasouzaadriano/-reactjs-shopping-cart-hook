@@ -303,8 +303,6 @@ describe('useCart Hook', () => {
       wrapper: CartProvider,
     });
 
-    console.log('waitForNextUpdate: ', waitForNextUpdate)
-
     act(() => {
       result.current.updateProductAmount({ amount: 2, productId });
     });
