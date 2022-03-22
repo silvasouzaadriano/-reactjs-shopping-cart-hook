@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState } from 'react';
+import { createContext, ReactNode, useContext, useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { api } from '../services/api';
 import { Product, Stock } from '../types';
@@ -23,7 +23,7 @@ const CartContext = createContext<CartContextData>({} as CartContextData);
 
 export function CartProvider({ children }: CartProviderProps): JSX.Element {
   const [cart, setCart] = useState<Product[]>(() => {
-    const storagedCart = localStorage.getItem('@RocketShoes:cart');
+  const storagedCart = localStorage.getItem('@RocketShoes:cart');
 
     if (storagedCart) {
       return JSON.parse(storagedCart);
@@ -31,6 +31,26 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
 
     return [];
   });
+
+  // Using useRef logic for setItem when always the cart is updated
+    const prevCartRef = useRef<Product[]>();
+
+    // Always the ref will be updated once cart updated
+    useEffect(() => {
+      prevCartRef.current= cart;
+    });
+
+    /* 
+      Case prevCartRef.current is not null or undefined it value will be used,
+      otherwise the cart value will be used
+    */
+    const cartPreviousValue = prevCartRef.current ?? cart;
+
+    useEffect(() => {
+      if (cartPreviousValue !== cart) {
+        localStorage.setItem('@RocketShoes:cart', JSON.stringify(cart));
+      }
+    }, [cart, cartPreviousValue]);
 
   const addProduct = async (productId: number) => {
     try {
@@ -60,7 +80,6 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       }
 
       setCart(updatedCart);
-      localStorage.setItem('@RocketShoes:cart', JSON.stringify(updatedCart));
     } catch {
       toast.error('Erro na adição do produto');
     }
@@ -74,7 +93,6 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       if (productIndex >= 0) {
         updatedCart.splice(productIndex, 1);
         setCart(updatedCart);
-        localStorage.setItem('@RocketShoes:cart', JSON.stringify(updatedCart));
       } else {
         throw Error();
       }
@@ -107,7 +125,6 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       if (productExists) {
         productExists.amount = amount;
         setCart(updatedCart)
-        localStorage.setItem('@RocketShoes:cart', JSON.stringify(updatedCart));
       } else {
         throw Error();
       }
