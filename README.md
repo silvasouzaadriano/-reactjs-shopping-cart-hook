@@ -5,7 +5,7 @@
 ## Setup instructions
 
   ### 1. Clone the application in your local repository
-      . In your terminala run the command:
+      . In your terminal run the command:
 
         git clone https://github.com/silvasouzaadriano/reactjs-shopping-cart-hook.git
 
@@ -30,5 +30,3 @@
       . In a new terminal run the command:
         
         yarn test or npm run test
-      
-      . In your favorite browser open the application using the url http://localhost:3000/
