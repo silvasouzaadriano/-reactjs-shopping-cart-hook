@@ -19,9 +19,16 @@
         
         yarn server or npm run server
       
-  ### 3. Running web application
+  ### 4. Running web application
       . In a new terminal run the command:
         
         yarn start or npm run start
+      
+      . In your favorite browser open the application using the url http://localhost:3000/
+
+  ### 5. Running unit tests
+      . In a new terminal run the command:
+        
+        yarn test or npm run test
       
       . In your favorite browser open the application using the url http://localhost:3000/
